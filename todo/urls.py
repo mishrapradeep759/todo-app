@@ -18,7 +18,8 @@ from django.contrib import admin
 
 import registration
 
+app_name = "todo"
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^todo/', include(registration.urls)),
+    url(r'^todo/', include("registration.urls"), name="todo_register"),
 ]

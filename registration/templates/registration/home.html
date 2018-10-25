@@ -1,0 +1,6 @@
+{% block logout %}
+<h2>Login successful!</h2>
+<form action="{% url 'registration:logout' %}">
+    <input type="submit" value="Logout" />
+</form>
+{% endblock logout %}

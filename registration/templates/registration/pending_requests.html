@@ -1,0 +1,8 @@
+<h2>Pending Requests are: </h2>
+{% for request in pending_requests %}
+<li>request</li>
+<p>
+    <!--Reject logic is pending -->
+    <a href="{% url 'registration:login' %}">Approve</a> or <a href="{% url 'registration:login' %}">Regect</a>
+</p>
+{% endfor %}
