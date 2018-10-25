@@ -1,6 +1,4 @@
-{% block logout %}
-<h2>Login successful!</h2>
-<form action="{% url 'registration:logout' %}">
-    <input type="submit" value="Logout" />
-</form>
-{% endblock logout %}
+{% block home %}
+<p>Click here if you are alredy registered: <a href="{% url 'registration:login' %}">Login</a></p>
+<p>register: <a href="/todo/">Register</a></p>
+{% endblock home%}

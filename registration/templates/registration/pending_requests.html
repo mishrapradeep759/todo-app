@@ -1,6 +1,6 @@
 <h2>Pending Requests are: </h2>
-{% for request in pending_requests %}
-<li>request</li>
+{% for pending_request in pending_requests %}
+<li>{{pending_request.user.username}}</li>
 <p>
     <!--Reject logic is pending -->
     <a href="{% url 'registration:login' %}">Approve</a> or <a href="{% url 'registration:login' %}">Regect</a>

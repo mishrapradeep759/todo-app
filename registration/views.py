@@ -6,7 +6,8 @@ from registration_form import RegistrationForm
 from .models import Profile
 from django.contrib.auth.models import User,Group
 from django.http import HttpResponse
-
+from registration.login_form import LoginForm
+from django.contrib.auth import authenticate, login
 
 
 
@@ -14,7 +15,7 @@ def send_request_to_admin(request):
     return get_pending_request(request)
 
 def get_pending_request(request):
-    pending_requests = Profile.objects.filter(user__is_active="False")
+    pending_requests = Profile.objects.filter(user__profile__is_active=False)
     return render(request, "registration/pending_requests.html", {"pending_requests": pending_requests})
 
 def show_request_message(request):
@@ -22,13 +23,39 @@ def show_request_message(request):
 
     # return acess_to_user(request,user_id)
 
+def user_login(request):
+    if request.method=="POST":
+        login_form = LoginForm(request.POST)
+        if login_form.is_valid():
+            data = login_form.cleaned_data
+            print "data %s" % data
+            email = data["email"]
+            password = data["password"]
+            user = authenticate(request, email=email, password=password)
+            print user
+            print user.profile
+            if user is not None:
+                print "user is admin %s" % user.profile.is_admin
+                if user.profile.is_admin==True:
+
+                    login(request, user)
+                    return render(request, "registration/navigation.html")
+                else:
+                    return HttpResponse("Request is pending")
+
+    else:
+        login_form = LoginForm()
+
+    return render(request, "registration/login.html", {"form": login_form})
+
 
 def registration_page(request):
-    print request.method
 
     if request.method=="POST":
         registration_form = RegistrationForm(request.POST)
         if registration_form.is_valid():
+            # import pdb
+            # pdb.set_trace()
             data = registration_form.cleaned_data
             email = data["email"]
             domain = email.split("@")[-1]
@@ -41,16 +68,26 @@ def registration_page(request):
                 profile.is_admin = True
                 profile.is_active = True
                 profile.save()
-            else:
-                profile.save()
-                return send_request_to_admin(request)
 
-            return redirect(reverse("registration:login"))
+            return redirect(reverse("registration:registration_completed"))
+            # else:
+            #     return send_request_to_admin(request)
+            #
+            # return redirect(reverse("registration:login"))
 
     else:
         registration_form = RegistrationForm()
     return render(request, "registration/registration.html", {"registration_form": registration_form})
 
+
+
+
+def home_view(request):
+    return render(request, "registration/home.html")
+
+
+def reistration_completed(request):
+    return render(request, "registration/registration_completed.html")
 
 '''once the user is register, request should go to admin, once he aproves this function get called'''
 def acess_to_user(request, user_id):
@@ -63,8 +100,9 @@ def home(request):
     return redirect(reverse("registration:logout"))
 
 
-def user_login(request):
-    return render(request, "registration/home.html")
+# def user_login(request):
+#     user = request.user
+#     return render(request, "registration/home.html", {"user": user})
 
 
 def get_user_email(request, user_id):

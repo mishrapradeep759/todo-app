@@ -17,3 +17,12 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class NavigationPannel(models.Model):
+    assign_task = models.CharField(max_length=200)
+    view_task = models.CharField(max_length=200)
+
+
+    # @property
+    # def username(self):
+    #     return self.user.username
