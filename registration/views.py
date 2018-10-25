@@ -8,7 +8,7 @@ from django.contrib.auth.models import User,Group
 from django.http import HttpResponse
 from registration.login_form import LoginForm
 from django.contrib.auth import authenticate, login
-
+from .models import TaskManager
 
 
 def send_request_to_admin(request):
@@ -31,7 +31,8 @@ def user_login(request):
             print "data %s" % data
             email = data["email"]
             password = data["password"]
-            user = authenticate(request, email=email, password=password)
+            username = data["username"]
+            user = authenticate(request, username=username, password=password)
             print user
             print user.profile
             if user is not None:
@@ -39,6 +40,7 @@ def user_login(request):
                 if user.profile.is_admin==True:
 
                     login(request, user)
+                    users = User.objects.filter(user.profile__is_admin=False)
                     return render(request, "registration/navigation.html")
                 else:
                     return HttpResponse("Request is pending")
