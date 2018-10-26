@@ -1,15 +1,24 @@
+
 {% for user in users %}
 
-    {% if user.is_active %}
-        <p>{{user.user.username}}</p>
-        <!--show_profile page-->
+    {% if not user.is_admin %}
+        <table>
+            <tr>
+                <td>Please approve login for {{user.user.username}}</td>
+                <td><a href="{% url 'registration:pending_requests' %}">Aprove User</a></td>
+            </tr>
+        </table>
     {% else %}
-        <p>{{user.user.username}}</p>
-        <!--show other user page-->
+
     {% endif %}
 {% endfor %}
 
+<p>
+    <a href="{% url 'registration:taskboard' %}">View Task</a>
+</p>
 
-<p><a href="#">Approve Task</a></p>
-<p>View Task</p>
-<p>Assign Task</p>
+<p>
+    <a href="{% url 'registration:add_task' %}">Assign Task</a>
+</p>
+
+<a href="{% url 'registration:logout' %}"><button class="btn">Logout</button></a>

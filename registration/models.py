@@ -19,19 +19,9 @@ class Profile(models.Model):
         return self.user.username
 
 class TaskManager(models.Model):
-    TASK_CHOICES = (
-    ('A', 'Approved'),
-    ('P', 'Pending'),
-    ('C', 'Completed'),
-)
-    name = models.CharField(max_length=200)
-    task_choice = models.CharField(max_length=2, choices=TASK_CHOICES)
+    is_completed = models.BooleanField(default=False)
     content = models.TextField()
-    group = models.ForeignKey(Group, on_delete=models.DO_NOTHING)
+    assignee = models.ForeignKey(User, related_name="assignee")
+    assignor = models.ForeignKey(User, related_name="assignor")
 
 
-# Admin Interface fields: Approve Task, Assign Task, View Task
-
-    # @property
-    # def username(self):
-    #     return self.user.username

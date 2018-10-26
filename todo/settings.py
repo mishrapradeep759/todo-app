@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'registration.middleware.simple_middleware',
 ]
 
 ROOT_URLCONF = 'todo.urls'
@@ -122,4 +123,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 LOGIN_REDIRECT_URL = "/todo/home"
-LOGIN_URL = "login"
+LOGIN_URL = "/todo/login"
