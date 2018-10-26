@@ -17,7 +17,8 @@ urlpatterns = [
 
     url(r'pending_request/',user_view.get_pending_request, name='pending_request'),
 
-    url(r'(?P<user_id>[0-9]+)/$',user_view.show_request_message, name='userid'),
+    # url(r'(?P<user_id>\d+)/$',user_view.show_request_message, name='userid'),
 
     url(r'group/',user_view.create_user_group, name='group'),
+    url(r'^profile/(?P<user_id>[0-9]+)/$',user_view.user_profile, name='profile'),
 ]

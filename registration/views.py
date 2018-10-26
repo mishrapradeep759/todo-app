@@ -18,11 +18,6 @@ def get_pending_request(request):
     pending_requests = Profile.objects.filter(user__profile__is_active=False)
     return render(request, "registration/pending_requests.html", {"pending_requests": pending_requests})
 
-def show_request_message(request):
-    return HttpResponse("<h1>Your request has been pending by admin</h1>")
-
-    # return acess_to_user(request,user_id)
-
 def user_login(request):
     if request.method=="POST":
         login_form = LoginForm(request.POST)
@@ -40,8 +35,13 @@ def user_login(request):
                 if user.profile.is_admin==True:
 
                     login(request, user)
-                    users = User.objects.filter(user.profile__is_admin=False)
-                    return render(request, "registration/navigation.html")
+                    # import pdb
+                    # pdb.set_trace()
+                    print "userid is %s" % user.id
+                    redirect(reverse("registration:profile", args=(user.profile.id,)))
+
+                    # users = User.objects.filter(user.profile__is_admin=False)
+                    # return render(request, "registration/navigation.html")
                 else:
                     return HttpResponse("Request is pending")
 
@@ -51,8 +51,22 @@ def user_login(request):
     return render(request, "registration/login.html", {"form": login_form})
 
 
-def registration_page(request):
+def user_profile(request, user_id):
+    # user = Profile.obects.get(pk=user_id)
+    # return HttpResponse("done!")
+    # print users
 
+    users = Profile.objects.all()
+    # for user in users:
+    #     import pdb
+    #     pdb.set_trace()
+
+    # if user.profile.is_active == True:
+    #     non_admin_users = Profile.objects.filter(is_active=False)
+    return render(request, "registration/user.html", {"users": users})
+
+
+def registration_page(request):
     if request.method=="POST":
         registration_form = RegistrationForm(request.POST)
         if registration_form.is_valid():

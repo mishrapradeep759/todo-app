@@ -1,0 +1,15 @@
+{% for user in users %}
+
+    {% if user.is_active %}
+        <p>{{user.user.username}}</p>
+        <!--show_profile page-->
+    {% else %}
+        <p>{{user.user.username}}</p>
+        <!--show other user page-->
+    {% endif %}
+{% endfor %}
+
+
+<p><a href="#">Approve Task</a></p>
+<p>View Task</p>
+<p>Assign Task</p>
